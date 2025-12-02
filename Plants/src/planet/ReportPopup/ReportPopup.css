@@ -1,0 +1,174 @@
+/* src/planet/ReportPopup/ReportPopup.css */
+
+/* 신고 팝업 오버레이 */
+.report-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 12000;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* 신고 패널 */
+.report-panel {
+  background: linear-gradient(135deg, #2a1a1e 0%, #3a2a2e 100%);
+  padding: 30px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 80, 80, 0.3);
+  animation: slideUp 0.4s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.report-panel h2 {
+  color: #fff;
+  margin-bottom: 10px;
+  font-size: 24px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.report-description {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+/* 신고 사유 목록 */
+.report-reasons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.report-reason-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.report-reason-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 80, 80, 0.4);
+}
+
+.report-reason-item input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  margin-right: 12px;
+  cursor: pointer;
+  accent-color: #ff5050;
+}
+
+.report-reason-item span {
+  color: #fff;
+  font-size: 14px;
+  flex: 1;
+}
+
+.report-reason-item input[type="radio"]:checked + span {
+  font-weight: 600;
+  color: #ff8080;
+}
+
+/* 기타 사유 입력란 */
+.report-custom-input {
+  width: 100%;
+  min-height: 100px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 80, 80, 0.3);
+  border-radius: 12px;
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.report-custom-input:focus {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 80, 80, 0.6);
+  box-shadow: 0 0 0 3px rgba(255, 80, 80, 0.1);
+}
+
+.report-custom-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* 버튼 그룹 */
+.report-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.report-submit-btn,
+.report-cancel-btn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.report-submit-btn {
+  background: linear-gradient(135deg, #ff5050 0%, #ff8080 100%);
+  color: white;
+}
+
+.report-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 80, 80, 0.4);
+}
+
+.report-cancel-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.report-cancel-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}

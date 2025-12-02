@@ -1,0 +1,708 @@
+/* -------------------- 컨테이너 -------------------- */
+.space-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: #000010;
+  overflow: hidden;
+}
+
+/* -------------------- 캔버스 -------------------- */
+.stars-canvas,
+.planet-canvas {
+  position: absolute;
+  inset: 0;
+}
+
+/* -------------------- 행성 라벨 -------------------- */
+.planet-label {
+  position: absolute;
+  color: #9a9aff;
+  pointer-events: none;
+  font-size: 14px;
+  font-weight: 600;
+  text-shadow: 0 0 6px #7b7bff, 0 0 10px #7b7bff;
+}
+
+/* -------------------- 큰 추가 버튼 -------------------- */
+.add-planet-button {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(45deg, #7b7bff, #4d4dff);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 12px 22px;
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 1200;
+  box-shadow: 0 0 12px #7b7bff, 0 0 20px rgba(123,123,255,0.5);
+  transition: transform 0.2s, box-shadow 0.3s;
+}
+
+
+.add-planet-button:hover {
+  transform: translateX(-50%) translateY(-2px);
+  box-shadow: 0 0 20px #9a9aff, 0 0 30px rgba(123,123,255,0.7);
+}
+
+/* -------------------- 행성 리스트 -------------------- */
+.planet-list {
+  position: absolute;
+  bottom: 40px;      /* 화면 아래에서 위로 띄움 */
+  left: 50%;
+  transform: translateX(-50%);
+  
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+
+  z-index: 3000;
+}
+
+.planet-list-item {
+  background: #222;
+  padding: 6px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  color: #9a9aff;
+  font-weight: 600;
+  text-shadow: 0 0 5px #7b7bff;
+  transition: transform 0.2s, background 0.2s;
+}
+
+
+.planet-list-item:hover {
+  transform: scale(1.05);
+  background: #333;
+  box-shadow: 0 0 8px #7b7bff, 0 0 15px rgba(123,123,255,0.4);
+}
+
+/* -------------------- 작은 + 버튼 -------------------- */
+.small-add-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(45deg, #7b7bff, #4d4dff);
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+  box-shadow: 0 0 8px #7b7bff, 0 0 15px rgba(123,123,255,0.4);
+  transition: transform 0.2s, box-shadow 0.3s;
+}
+.small-add-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px #9a9aff, 0 0 25px rgba(123,123,255,0.6);
+}
+
+/* -------------------- POPUP -------------------- */
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,15,0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 4000;
+  backdrop-filter: blur(4px);
+}
+
+.popup-panel {
+  width: 420px;
+  max-width: 95%;
+  background: rgba(10,5,30,0.95);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 0 15px #7b7bff, 0 0 30px rgba(123,123,255,0.3);
+  border: 1px solid rgba(123,123,255,0.4);
+  color: #e0e0f8;
+}
+
+/* Inputs */
+.input-text {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(123,123,255,0.3);
+  background: rgba(0,0,10,0.7);
+  color: #e0e0f8;
+  font-size: 1rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.input-text:focus {
+  border-color: #7b7bff;
+  box-shadow: 0 0 8px #7b7bff;
+  outline: none;
+}
+
+.file-label {
+  font-size: 12px;
+  color: #c9c9ff;
+}
+
+/* Preview strip */
+.preview-strip {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 6px 0;
+}
+
+.preview-item {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #111;
+  box-shadow: 0 0 8px #7b7bff inset;
+}
+
+.preview-item img,
+.preview-item video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+/* TAG input row */
+.tag-input-row {
+  display: flex;
+  gap: 6px;
+}
+
+.tag-add-btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  background: linear-gradient(45deg, #7b7bff, #4d4dff);
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 0 8px #7b7bff;
+}
+
+/* Tag preview */
+.tag-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag-item {
+  background: #222;
+  color: #9a9aff;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  text-shadow: 0 0 5px #7b7bff;
+}
+
+/* Buttons */
+.popup-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.popup-add {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(45deg, #7b7bff, #4d4dff);
+  color: white;
+  cursor: pointer;
+  flex: 1;
+  box-shadow: 0 0 10px #7b7bff;
+}
+.popup-add:hover {
+  box-shadow: 0 0 15px #9a9aff, 0 0 25px rgba(123,123,255,0.4);
+}
+
+.popup-cancel {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: #e74c3c;
+  color: white;
+  cursor: pointer;
+  flex: 1;
+  box-shadow: 0 0 8px #e74c3c;
+}
+.popup-cancel:hover {
+  box-shadow: 0 0 12px #ff5c5c, 0 0 20px rgba(231,76,60,0.5);
+}
+
+/* -------------------- 행성 삭제 버튼 -------------------- */
+.planet-delete-button {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+
+  background: rgba(231, 76, 60, 0.2); /* 은은한 붉은 배경 */
+  border: 1px solid #e74c3c;
+  color: #ffcccc;
+  
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  
+  z-index: 3100; /* Add 버튼보다 위 혹은 비슷하게 */
+  transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
+  
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.planet-delete-button:hover {
+  background: #e74c3c; /* 호버 시 진한 빨강 */
+  color: white;
+  box-shadow: 0 0 12px #e74c3c, 0 0 20px rgba(231, 76, 60, 0.4);
+  transform: translateY(-2px);
+}
+
+/* -------------------- MEDIA POPUP -------------------- */
+.media-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,15,0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3500;
+  overflow-y: auto;
+  padding: 24px 12px;
+  backdrop-filter: blur(4px);
+}
+
+.media-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+
+  width: 100%;
+  max-width: 700px;   /* ★ 그리드 너비를 제한해서 가운데 정렬 유지 */
+
+  justify-content: center; /* ★ 중앙 정렬 핵심 */
+  align-items: flex-start;
+}
+
+.media-grid-wrapper {
+  width: 90%;
+  max-width: 900px;
+
+  height: 600px; /* 고정 높이 유지 */
+  overflow-y: auto;
+
+  margin: 0 auto; /* ★ 중앙 배치 */
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;     /* ★ 내부 요소들 중앙 정렬 */
+  justify-content: flex-start;
+
+  padding: 20px;
+
+  border-radius: 16px;
+
+  /* 스크롤바 숨기기 */
+  scrollbar-width: none;
+}
+
+.media-grid-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+
+.media-thumb {
+  width: calc(33.333% - 12px);
+  aspect-ratio: 1/1;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #111;
+  box-shadow: 0 0 8px #7b7bff inset;
+}
+
+.media-thumb img,
+.media-thumb video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.media-view-panel {
+  position: relative;
+  width: 90%;
+  max-width: 500px;
+}
+
+.media-big {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 0 15px #7b7bff;
+}
+
+.media-tags {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.media-tag {
+  background: #222;
+  color: #9a9aff;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  text-shadow: 0 0 5px #7b7bff;
+}
+
+.media-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 10000; /* ★ [수정] 다른 요소 위에 확실히 보이도록 z-index를 높입니다. */
+  background: rgba(255, 255, 255, 0.2); /* 배경색을 반투명 흰색으로 */
+  color: white; /* 글자색을 흰색으로 */
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
+  line-height: 36px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  transition: background 0.2s;
+}
+
+.media-close:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+/* -------------------- MEDIA POPUP 추가 버튼 -------------------- */
+.media-add-button {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: none;
+
+  background: linear-gradient(45deg, #7b7bff, #4d4dff);
+  color: white;
+  font-size: 28px;
+  font-weight: bold;
+
+  cursor: pointer;
+  z-index: 3000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 0 10px #7b7bff, 0 0 25px rgba(123, 123, 255, 0.4);
+  transition: transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+.media-add-button:hover {
+  transform: scale(1.12);
+  box-shadow: 0 0 18px #9a9aff, 0 0 35px rgba(123, 123, 255, 0.6);
+}
+
+/* -------------------- ADD POPUP 파일 선택 버튼 -------------------- */
+.file-select-button {
+  background: linear-gradient(45deg, #7b7bff, #4d4dff);
+  color: white;
+  border: none;
+  padding: 10px 18px;
+
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+
+  box-shadow: 0 0 12px #7b7bff, 0 0 20px rgba(123, 123, 255, 0.4);
+
+  transition: transform 0.15s ease, box-shadow 0.25s ease;
+  margin-bottom: 10px;
+}
+
+.file-select-button:hover {
+  transform: scale(1.06);
+  box-shadow: 0 0 18px #9a9aff, 0 0 28px rgba(123, 123, 255, 0.6);
+}
+
+/* 미디어 삭제 버튼 */
+.media-delete-button {
+  position: absolute;
+  top: 15px;
+  right: 55px; /* 닫기 버튼(×) 옆에 배치 */
+  z-index: 9999;
+  background: rgba(255, 0, 0, 0.6); /* 빨간색 배경 */
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+  line-height: 40px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
+  transition: background 0.2s;
+}
+
+.media-delete-button:hover {
+  background: rgba(255, 0, 0, 0.8);
+}
+
+/* ================================
+   GRID VIEW 태그 + location 표시
+================================ */
+.media-tags-grid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 15px 0 10px;
+}
+
+/* location은 다른 태그와 구분되는 디자인 */
+.media-location-tag {
+  background: #333;
+  border: 1px solid #7b7bff;
+  color: #dcdcff;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 14px;
+  text-shadow: 0 0 5px #7b7bff;
+}
+
+
+/* ============================
+   미디어 설명 텍스트 스타일
+  ============================ */
+.media-desc {
+  margin-top: 8px;
+  padding: 6px 8px;
+  font-size: 14px;
+  color: #e5e5e5;
+  text-align: center;
+
+  /* 박스 느낌 */
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(120, 120, 255, 0.3);
+
+  border-radius: 8px;
+
+  /* 읽기 편하게 */
+  line-height: 1.4;
+  word-break: keep-all;
+  white-space: normal;
+
+  /* 너비 제한 (썸네일 크기와 동일하게 조정) */
+  max-width: 140px;
+
+  /* 부드러운 등장 */
+  opacity: 0;
+  animation: fadeInDesc 0.35s ease forwards;
+}
+
+@keyframes fadeInDesc {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+/* 기존 썸네일 그리드 */
+.media-thumbnail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 140px);
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+
+/* 새로운 설명 그리드 */
+.media-description-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 140px);
+  gap: 16px;
+  justify-content: center;
+}
+
+/* 설명 아이템 */
+.media-desc-item {
+  text-align: center;
+  color: #e6e6e6;
+  font-size: 14px;
+  padding: 6px 8px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(120,120,255,0.3);
+  border-radius: 8px;
+  width: 140px;
+}
+
+.media-description-box {
+  width: 100%;
+  max-width: 700px;  /* ★ media-grid와 같은 너비 */
+  margin: 20px auto 0 auto; /* 중앙 배치 */
+
+  padding: 12px 16px;
+  color: #e6e6e6;
+  font-size: 15px;
+
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(120,120,255,0.3);
+  border-radius: 10px;
+  text-align: center;
+  line-height: 1.5;
+}
+
+
+/* ==== MediaAddPopup 설명 텍스트 박스 ==== */
+.media-desc-textarea {
+  width: 100%;
+  min-height: 90px;
+  padding: 10px 12px;
+  box-sizing: border-box;
+
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(180, 180, 255, 0.35);
+  border-radius: 10px;
+
+  font-size: 14px;
+  color: #e8e8ff;
+  line-height: 1.45;
+
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.media-desc-textarea:focus {
+  border-color: #9aa0ff;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* ============================================
+   미디어 인터랙션 바 (좋아요/별/신고)
+============================================ */
+.media-interaction-bar {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 20px;
+  z-index: 8000;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 12px 24px;
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.interaction-btn {
+  font-size: 28px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+}
+
+.interaction-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: scale(1.15);
+}
+
+.interaction-btn:active {
+  transform: scale(0.95);
+}
+
+/* 좋아요 버튼 */
+.like-btn.active {
+  animation: heartBeat 0.5s ease;
+}
+
+@keyframes heartBeat {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.3); }
+  50% { transform: scale(1.1); }
+}
+
+/* 별 버튼 */
+.star-btn.active {
+  animation: starShine 0.6s ease;
+}
+
+@keyframes starShine {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.3) rotate(72deg); }
+}
+
+/* 신고 버튼 */
+.report-btn.active {
+  animation: reportShake 0.5s ease;
+  filter: grayscale(100%);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@keyframes reportShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+}
+
+.report-btn.active:hover {
+  background: none;
+  transform: translateX(0);
+}
+
+/* 호버 시 툴팁 효과 */
+.interaction-btn::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  margin-bottom: 8px;
+}
+
+.interaction-btn:hover::after {
+  opacity: 1;
+}
+
+
+
+
+
