@@ -47,6 +47,10 @@ export default function usePlanetSystem() {
   const fileInputRef = useRef(null);
 
   /* -----------------------------------------------------
+     Changing in Media zoom-view
+  ----------------------------------------------------- */
+  const [planets, setPlanets] = useState([]);
+  /* -----------------------------------------------------
      Fixed Planet Properties
   ----------------------------------------------------- */
   const fixedPlanets = [
@@ -90,24 +94,13 @@ export default function usePlanetSystem() {
   /* -----------------------------------------------------
      Add Planet
   ----------------------------------------------------- */
-  const addPlanet = (name, mediaList, tagsArray, descriptionText, locationText) => {
-    if (!name || name.trim() === "") {
-      alert("행성 이름을 입력하세요.");
-       return false;
-    }
+  const addPlanet = (name, mediaList) => {
 
-    if (!mediaList || mediaList.length === 0) {
-      alert("행성을 생성하려면 최소 1개 이상의 파일을 첨부해야 합니다.");
-      return false;
-    }
-   
     const newId = findNextPlanetId(planetList);
 
     const normalizedMedia = mediaList.map((it) => ({
       url: it.url,
       mediaType: it.mediaType,
-      description: it.description || "",
-      location: it.location || "",
       liked: false,
       likedAt: null,
       starred: false,
@@ -132,20 +125,20 @@ export default function usePlanetSystem() {
       color: getPlanetColorById(newId),
       angle: Math.random() * Math.PI * 2,
       name,
-      description: descriptionText,
-      location: locationText,
       mediaList: normalizedMedia,
-      tags: tagsArray,
       preview: normalizedMedia?.[0]?.url || null,
       screenX: 0,
       screenY: 0,
+
+      tags: [],
+      description: "",
+      location: "",
     };
 
     setPlanetList(prevList => [...prevList, newPlanet]);
 
     return true;
   };
-
   /* -----------------------------------------------------
      Delete Planet
   ----------------------------------------------------- */
@@ -167,7 +160,7 @@ export default function usePlanetSystem() {
   /* -----------------------------------------------------
      Add Media - ★ [수정] 파일 객체 처리 개선
   ----------------------------------------------------- */
-  const addMediaToPlanet = (planetId, files, tagsArray, descriptionText, locationText) => {
+  const addMediaToPlanet = (planetId, files) => {
     console.log("🎬 addMediaToPlanet 호출됨");
     console.log("전달된 files:", files);
     
@@ -180,10 +173,9 @@ export default function usePlanetSystem() {
       console.log("정규화된 미디어:", { url: fileUrl, mediaType: fileType });
       
       return {
+        ...file, 
         url: fileUrl,
         mediaType: fileType,
-        description: descriptionText,
-        location: locationText,
         liked: false,
         likedAt: null,
         starred: false,
@@ -202,9 +194,7 @@ export default function usePlanetSystem() {
         
         const updatedPlanet = { ...p };
         updatedPlanet.mediaList = [...(p.mediaList || []), ...normalizedMedia];
-        updatedPlanet.tags = tagsArray;
-        updatedPlanet.description = descriptionText;
-        updatedPlanet.location = locationText;
+
         updatedPlanet.preview = updatedPlanet.mediaList[0]?.url || null;
 
         console.log("✅ 업데이트된 행성:", updatedPlanet);
@@ -231,6 +221,77 @@ export default function usePlanetSystem() {
       };
     });
   };
+
+  const updatePlanetMeta = (planetId, { tags, description, location }) => {
+    setPlanetList(prev =>
+      prev.map(p => {
+        if (p.id !== planetId) return p;
+        return {
+          ...p,
+          tags: tags ?? p.tags,
+          description: description ?? p.description,
+          location: location ?? p.location,
+        };
+      })
+    );
+
+    // 열려있는 MediaPopup도 같이 갱신
+    setMediaPopup(prev => {
+      if (!prev || prev.planet.id !== planetId) return prev;
+      return {
+        ...prev,
+        planet: {
+          ...prev.planet,
+          tags: tags ?? prev.planet.tags ?? [],
+          description: description ?? prev.planet.description ?? "",
+          location: location ?? prev.planet.location ?? "",
+        }
+      };
+    });
+  };
+
+const updateMediaMeta = (planetId, mediaIndex, meta) => {
+  console.log("updateMediaMeta 실행됨:", planetId, mediaIndex, meta);
+
+  // 1) planetList 업데이트
+  setPlanetList((prevList) =>
+    prevList.map((p) => {
+      if (p.id !== planetId) return p;
+
+      const updatedMediaList = [...p.mediaList];
+      updatedMediaList[mediaIndex] = {
+        ...updatedMediaList[mediaIndex],
+        ...meta,
+      };
+
+      return {
+        ...p,
+        mediaList: updatedMediaList,
+      };
+    })
+  );
+
+  // 2) MediaPopup 상태 업데이트 (Zoom View 즉시 반영)
+  setMediaPopup((prev) => {
+    if (!prev || prev.planet.id !== planetId) return prev;
+
+    const updatedMediaList = [...prev.planet.mediaList];
+    updatedMediaList[mediaIndex] = {
+      ...updatedMediaList[mediaIndex],
+      ...meta,
+    };
+
+    return {
+      ...prev,
+      planet: {
+        ...prev.planet,
+        mediaList: updatedMediaList,
+      },
+    };
+  });
+};
+
+
 
   /* -----------------------------------------------------
      Delete Media From Planet - ★ [수정] 상태 업데이트 개선
@@ -505,11 +566,7 @@ export default function usePlanetSystem() {
     isPausedRef.current = false;
 
     setInputFile([]);
-    setTags([]);
-    setInputTag("");
     setInputName("");
-    setDescription("");
-    setLocation("");
   };
 
   /* -----------------------------------------------------
@@ -549,6 +606,8 @@ export default function usePlanetSystem() {
 
     fileInputRef,
 
+    updateMediaMeta,
+
     setPlanetList,
     setHoveredListPlanet,
     setPopupOpen,
@@ -567,6 +626,7 @@ export default function usePlanetSystem() {
     deleteMediaFromPlanet,
     addPlanet,
     addMediaToPlanet,
+    updatePlanetMeta,
     openMediaAddPopupForPlanet,
     handleFileChange,
     closeAddPopup,

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import "./MediaAddPopup.css";
 
 export default function MediaAddPopup({ system }) {
-  const { mediaAddPopup, setMediaAddPopup, addMediaToPlanet } = system;
+  const { mediaAddPopup, setMediaAddPopup, addMediaToPlanet, updatePlanetMeta  } = system;
 
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [previewList, setPreviewList] = useState([]);
@@ -63,14 +63,24 @@ export default function MediaAddPopup({ system }) {
   };
 
   const handleSave = () => {
-    if (selectedFiles.length === 0) {
-      alert("최소 1개 이상의 파일을 선택해야 미디어를 추가할 수 있습니다.");
-      return;
-    }
+    // 1) 추가되는 파일이 있다 → 미디어마다 meta 포함해서 집어넣기
+    if (selectedFiles.length > 0) {
+      const mediaItems = selectedFiles.map((file) => ({
+        ...file,            // url, mediaType
+        tags: [...tagList],
+        location,
+        description,
+        liked: false,
+        starred: false,
+        reported: false
+      }));
 
-    addMediaToPlanet(planet.id, selectedFiles, tagList, description, location);
-    handleClose();
-  };
+    addMediaToPlanet(planet.id, mediaItems);
+  }
+
+  handleClose();
+};
+
 
   const handleClose = () => {
     setMediaAddPopup(null);

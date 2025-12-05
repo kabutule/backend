@@ -11,14 +11,6 @@ export default function AddPlanetPopup({ system }) {
     inputFile,
     handleFileChange,
     fileInputRef,
-    inputTag,
-    setInputTag,
-    tags,
-    setTags,
-    description,
-    setDescription,
-    location,
-    setLocation,
     addPlanet,
   } = system;
 
@@ -34,22 +26,6 @@ export default function AddPlanetPopup({ system }) {
           placeholder="행성 이름"
           value={inputName}
           onChange={(e) => setInputName(e.target.value)}
-        />
-
-        <textarea
-          className="input-text"
-          placeholder="설명 입력"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          style={{ minHeight: "70px" }}
-        />
-
-        <textarea
-          className="input-text"
-          placeholder="Location 입력"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-          style={{ minHeight: "60px" }}
         />
 
         <div>
@@ -69,6 +45,7 @@ export default function AddPlanetPopup({ system }) {
           />
         </div>
 
+        {/* 미리보기 */}
         <div className="preview-strip">
           {inputFile.map((m, i) => (
             <div key={i} className="preview-item">
@@ -81,41 +58,12 @@ export default function AddPlanetPopup({ system }) {
           ))}
         </div>
 
-        <div className="tag-input-row">
-          <input
-            className="input-text"
-            style={{ flex: 1 }}
-            placeholder="태그 추가"
-            value={inputTag}
-            onChange={(e) => setInputTag(e.target.value)}
-          />
-          <button
-            className="tag-add-btn"
-            onClick={() => {
-              if (inputTag.trim() === "") return;
-              setTags([...tags, inputTag.trim()]);
-              setInputTag("");
-            }}
-          >
-            추가
-          </button>
-        </div>
-
-        <div className="tag-preview">
-          {tags.map((t, i) => (
-            <span key={i} className="tag-item">
-              #{t}
-            </span>
-          ))}
-        </div>
-
         <div className="popup-buttons">
           <button
             className="popup-add"
             onClick={() => {
-              const success = addPlanet(inputName, inputFile, tags, description, location);
-              if(success)
-                  closeAddPopup();
+              const success = addPlanet(inputName, inputFile);
+              if (success) closeAddPopup();
             }}
           >
             생성
