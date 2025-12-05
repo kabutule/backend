@@ -85,7 +85,7 @@ export default function MediaPopup({ system }) {
     return planet.mediaList[zoomIndex];
   };
 
-  const currentMedia = getCurrentMedia();
+  const currentMedia = planet.mediaList[zoomIndex];
 
   return (
     <>
@@ -156,68 +156,90 @@ export default function MediaPopup({ system }) {
             </div>
           </div>
         ) : (
-          /* Zoom View */
-          <div className="media-view-panel" onClick={(e) => e.stopPropagation()}>
-            {(() => {
-              const item = planet.mediaList[zoomIndex];
-              return item.mediaType === "image" ? (
-                <img src={item.url} alt="" className="media-big" />
-              ) : (
-                <video src={item.url} controls autoPlay className="media-big" />
-              );
-            })()}
+          /* ======================= Zoom View ======================= */
+<div className="media-view-panel" onClick={(e) => e.stopPropagation()}>
+  
+  <div className="zoom-content-wrapper">
 
-            <div className="media-tags">
-              {planet.tags?.map((t, i) => (
-                <span key={i} className="media-tag">
-                  #{t}
-                </span>
-              ))}
-            </div>
+    {/* 큰 이미지 */}
+    {(() => {
+      const item = planet.mediaList[zoomIndex];
+      return item.mediaType === "image" ? (
+        <img src={item.url} alt="" className="media-big" />
+      ) : (
+        <video src={item.url} controls autoPlay className="media-big" />
+      );
+    })()}
 
-            <button className="media-delete-button" onClick={handleDeleteMedia}>
-              🗑️
-            </button>
+    {/* 태그 */}
+    <div className="zoom-meta-tags">
+      {currentMedia.tags?.map((t, i) => (
+      <span key={i} className="zoom-tag-item">
+        #{t}
+      </span>
+        ))}
+    </div>
 
-            <div
-              className="media-close"
-              onClick={() => setMediaPopup({ planet, zoomIndex: null })}
-            >
-              ×
-            </div>
+    {/* location */}
+    {currentMedia.location?.trim() !== "" && (
+      <div className="zoom-meta-location">
+        📍 {currentMedia.location}
+      </div>
+    )}
 
-            <div className="media-interaction-bar">
-              <button
-                className={`interaction-btn like-btn ${
-                  currentMedia?.liked ? "active" : ""
-                }`}
-                onClick={handleLike}
-                title="좋아요"
-              >
-                {currentMedia?.liked ? "❤️" : "🤍"}
-              </button>
 
-              <button
-                className={`interaction-btn star-btn ${
-                  currentMedia?.starred ? "active" : ""
-                }`}
-                onClick={handleStar}
-                title="즐겨찾기"
-              >
-                {currentMedia?.starred ? "⭐" : "☆"}
-              </button>
+    {/* description */}
+  <div className="zoom-meta-description">
+    {String(currentMedia.description || "").trim() !== ""
+      ? currentMedia.description
+      : "설명이 없습니다."}
+  </div>
 
-              <button
-                className={`interaction-btn report-btn ${
-                  currentMedia?.reported ? "active" : ""
-                }`}
-                onClick={handleReport}
-                title="신고"
-              >
-                🚨
-              </button>
-            </div>
-          </div>
+
+  </div>
+
+  {/* 삭제 버튼 */}
+  <button className="media-delete-button" onClick={handleDeleteMedia}>
+    🗑️
+  </button>
+
+  {/* 닫기 버튼 */}
+  <div
+    className="media-close"
+    onClick={() => setMediaPopup({ planet, zoomIndex: null })}
+  >
+    ×
+  </div>
+
+  {/* 좋아요/별/신고 */}
+  <div className="media-interaction-bar">
+    <button
+      className={`interaction-btn like-btn ${currentMedia?.liked ? "active" : ""}`}
+      onClick={handleLike}
+      title="좋아요"
+    >
+      {currentMedia?.liked ? "❤️" : "🤍"}
+    </button>
+
+    <button
+      className={`interaction-btn star-btn ${currentMedia?.starred ? "active" : ""}`}
+      onClick={handleStar}
+      title="즐겨찾기"
+    >
+      {currentMedia?.starred ? "⭐" : "☆"}
+    </button>
+
+    <button
+      className={`interaction-btn report-btn ${currentMedia?.reported ? "active" : ""}`}
+      onClick={handleReport}
+      title="신고"
+    >
+      🚨
+    </button>
+  </div>
+
+</div>
+
         )}
 
         <MediaAddPopup system={system} />
