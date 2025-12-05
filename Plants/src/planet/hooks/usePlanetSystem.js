@@ -250,6 +250,7 @@ export default function usePlanetSystem() {
     });
   };
 
+<<<<<<< HEAD
 const updateMediaMeta = (planetId, mediaIndex, meta) => {
   console.log("updateMediaMeta 실행됨:", planetId, mediaIndex, meta);
 
@@ -292,6 +293,8 @@ const updateMediaMeta = (planetId, mediaIndex, meta) => {
 };
 
 
+=======
+>>>>>>> c6dd3fcd9f7bb22ccdc4d3f4775312e80992ded7
 
   /* -----------------------------------------------------
      Delete Media From Planet - ★ [수정] 상태 업데이트 개선

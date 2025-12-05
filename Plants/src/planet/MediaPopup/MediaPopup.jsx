@@ -207,11 +207,14 @@ export default function MediaPopup({ system }) {
     🗑️
   </button>
 
+<<<<<<< HEAD
   {/* 수정 버튼 */}
   <button className="media-edit-button" onClick={() => setShowEditPopup(true)}>
   ✏️
 </button>
 
+=======
+>>>>>>> c6dd3fcd9f7bb22ccdc4d3f4775312e80992ded7
   {/* 닫기 버튼 */}
   <div
     className="media-close"
