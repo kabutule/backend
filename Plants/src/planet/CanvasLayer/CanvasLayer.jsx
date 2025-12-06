@@ -3,9 +3,9 @@ import React, { useEffect, useRef } from "react";
 
 
 export default function CanvasLayer({ system }) {
-  const starsRef = useRef(null);
+  // starsRef 제거됨
   const planetRef = useRef(null);
-  const bgCanvasRef = useRef(null);
+  const bgCanvasRef = useRef(null); // bgCanvas는 planetCanvas에 배경으로 복사하기 위해 유지
 
   const {
     containerRef,
@@ -18,11 +18,11 @@ export default function CanvasLayer({ system }) {
   } = system;
 
   useEffect(() => {
-    const starsCanvas = starsRef.current;
+    // starsCanvas 관련 변수 제거됨
     const planetCanvas = planetRef.current;
     const container = containerRef.current;
 
-    if (!starsCanvas || !planetCanvas || !container) return;
+    if (!planetCanvas || !container) return;
 
     const dpr = Math.max(window.devicePixelRatio || 1, 1);
 
@@ -30,12 +30,13 @@ export default function CanvasLayer({ system }) {
     bgCanvasRef.current = bgCanvas;
     const bgCtx = bgCanvas.getContext("2d");
 
-    let stars = [];
+    // let stars = []; 제거됨
 
     function resize() {
       const { width, height } = container.getBoundingClientRect();
 
-      [starsCanvas, planetCanvas, bgCanvas].forEach((c) => {
+      // starsCanvas 제거됨
+      [planetCanvas, bgCanvas].forEach((c) => {
         c.width = Math.round(width * dpr);
         c.height = Math.round(height * dpr);
         c.style.width = `${width}px`;
@@ -43,76 +44,19 @@ export default function CanvasLayer({ system }) {
       });
 
       drawBackground();
-      initStars();
+      // initStars() 제거됨
     }
 
-    function initStars() {
-      const w = starsCanvas.width;
-      const h = starsCanvas.height;
-      const count = Math.round((w * h) / 1600);
+    // initStars 함수 제거됨
 
-      stars = new Array(count).fill(0).map(() => ({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        r: (Math.random() * 1.2 + 0.2) * dpr,
-        twinkleSpeed: 0.003 + Math.random() * 0.007,
-        phase: Math.random() * Math.PI * 2,
-      }));
-    }
-
-    function drawStars() {
-      const ctx = starsCanvas.getContext("2d");
-      ctx.clearRect(0, 0, starsCanvas.width, starsCanvas.height);
-
-      for (let s of stars) {
-        const t = performance.now() * s.twinkleSpeed + s.phase;
-        const a = 0.5 + Math.abs(Math.sin(t)) * 0.5;
-
-        ctx.beginPath();
-        ctx.fillStyle = `rgba(255,255,255,${a})`;
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
+    // drawStars 함수 제거됨
 
     function drawBackground() {
       const w = bgCanvas.width;
       const h = bgCanvas.height;
 
+      // 이전 단계에서 Blobs 로직이 제거되었으므로, 캔버스만 지웁니다.
       bgCtx.clearRect(0, 0, w, h);
-
-      const blobs = [
-        { x: 0.2 * w, y: 0.3 * h, r: 0.6 * Math.min(w, h), color: [95, 58, 255] },
-        { x: 0.8 * w, y: 0.5 * h, r: 0.5 * Math.min(w, h), color: [255, 80, 175] },
-        { x: 0.5 * w, y: 0.8 * Math.min(w, h), r: 0.7 * Math.min(w, h), color: [20, 200, 255] },
-      ];
-
-      blobs.forEach((b, i) => {
-        const grad = bgCtx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r);
-        const [r, g, bl] = b.color;
-
-        grad.addColorStop(0, `rgba(${r},${g},${bl},0.45)`);
-        grad.addColorStop(0.45, `rgba(${r},${g},${bl},0.18)`);
-        grad.addColorStop(1, "rgba(0,0,0,0)");
-
-        bgCtx.globalCompositeOperation = i === 0 ? "lighter" : "screen";
-        bgCtx.fillStyle = grad;
-        bgCtx.fillRect(b.x - b.r, b.y - b.r, b.r * 2, b.r * 2);
-      });
-
-      const cx = w / 2;
-      const cy = h / 2;
-
-      const sunGrad = bgCtx.createRadialGradient(cx, cy, 0, cx, cy, 300 * dpr);
-      sunGrad.addColorStop(0, "rgba(255,255,200,0.9)");
-      sunGrad.addColorStop(0.2, "rgba(255,220,100,0.6)");
-      sunGrad.addColorStop(0.6, "rgba(255,160,0,0.3)");
-      sunGrad.addColorStop(1, "rgba(0,0,0,0)");
-
-      bgCtx.globalCompositeOperation = "screen";
-      bgCtx.fillStyle = sunGrad;
-      bgCtx.fillRect(0, 0, w, h);
-
       bgCtx.globalCompositeOperation = "source-over";
     }
 
@@ -127,6 +71,20 @@ export default function CanvasLayer({ system }) {
       ctx.clearRect(0, 0, w, h);
       ctx.drawImage(bgCanvas, 0, 0);
 
+      // sunGrad 로직 (유지)
+      const sunGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 300 * dpr);
+      sunGrad.addColorStop(0, "rgba(255,255,200,0.9)");
+      sunGrad.addColorStop(0.2, "rgba(255,220,100,0.6)");
+      sunGrad.addColorStop(0.6, "rgba(255,160,0,0.3)");
+      sunGrad.addColorStop(1, "rgba(0,0,0,0)");
+
+      ctx.globalCompositeOperation = "screen";
+      ctx.fillStyle = sunGrad;
+      ctx.fillRect(0, 0, w, h);
+
+      ctx.globalCompositeOperation = "source-over";
+      
+      // 행성 그리기 로직 (유지)
       const lightX = cx;
       const lightY = cy;
 
@@ -209,13 +167,12 @@ export default function CanvasLayer({ system }) {
 
     let raf;
     function loop() {
-      drawStars();
+      // drawStars() 제거됨
       drawPlanets();
       raf = requestAnimationFrame(loop);
     }
 
     resize();
-    initStars();
     loop();
 
     window.addEventListener("resize", resize);
@@ -228,7 +185,7 @@ export default function CanvasLayer({ system }) {
 
   return (
     <>
-      <canvas ref={starsRef} className="stars-canvas" />
+      {/* stars-canvas 제거됨 */}
       <canvas ref={planetRef} className="planet-canvas" />
     </>
   );
