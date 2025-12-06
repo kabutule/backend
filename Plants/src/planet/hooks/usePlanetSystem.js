@@ -94,13 +94,17 @@ export default function usePlanetSystem() {
   /* -----------------------------------------------------
      Add Planet
   ----------------------------------------------------- */
-  const addPlanet = (name, mediaList) => {
+// App.jsx 또는 메인 로직 파일
+
+const addPlanet = (name, files) => { // 매개변수 이름을 명확히 변경 (mediaList -> files)
 
     const newId = findNextPlanetId(planetList);
 
-    const normalizedMedia = mediaList.map((it) => ({
+    // 1. 입력받은 파일을 정규화 (이것은 프리뷰용 파일이 됩니다)
+    const normalizedPreviewFiles = files.map((it) => ({
       url: it.url,
       mediaType: it.mediaType,
+      // ...기타 속성 초기화
       liked: false,
       likedAt: null,
       starred: false,
@@ -125,20 +129,25 @@ export default function usePlanetSystem() {
       color: getPlanetColorById(newId),
       angle: Math.random() * Math.PI * 2,
       name,
-      mediaList: normalizedMedia,
-      preview: normalizedMedia?.[0]?.url || null,
+      
+      // ★ [변경 핵심] 
+      // 1. 여기서 추가한 파일은 'previewFiles'에 별도 저장
+      previewFiles: normalizedPreviewFiles, 
+      
+      // 2. 일반 'mediaList'는 빈 배열로 시작 (나중에 addMediaToPlanet으로 추가됨)
+      mediaList: [], 
+
+      // 3. 대표 프리뷰 이미지는 previewFiles의 첫 번째 항목 사용
+      preview: normalizedPreviewFiles?.[0]?.url || null,
+      
       screenX: 0,
       screenY: 0,
-
-      tags: [],
-      description: "",
-      location: "",
     };
 
     setPlanetList(prevList => [...prevList, newPlanet]);
 
     return true;
-  };
+};
   /* -----------------------------------------------------
      Delete Planet
   ----------------------------------------------------- */
@@ -250,7 +259,6 @@ export default function usePlanetSystem() {
     });
   };
 
-<<<<<<< HEAD
 const updateMediaMeta = (planetId, mediaIndex, meta) => {
   console.log("updateMediaMeta 실행됨:", planetId, mediaIndex, meta);
 
@@ -293,9 +301,6 @@ const updateMediaMeta = (planetId, mediaIndex, meta) => {
 };
 
 
-=======
->>>>>>> c6dd3fcd9f7bb22ccdc4d3f4775312e80992ded7
-
   /* -----------------------------------------------------
      Delete Media From Planet - ★ [수정] 상태 업데이트 개선
   ----------------------------------------------------- */
@@ -318,15 +323,6 @@ const updateMediaMeta = (planetId, mediaIndex, meta) => {
       const newMediaList = targetPlanet.mediaList.filter((_, idx) => idx !== mediaIndex);
       console.log(`삭제 후 미디어 개수: ${newMediaList.length}`);
 
-      // 미디어가 0개가 되면 행성 삭제
-      if (newMediaList.length === 0) {
-        console.log("⚠️ 미디어가 0개 → 행성 삭제");
-        shouldDeletePlanet = true;
-        setHoveredListPlanet(null);
-        isPausedRef.current = false;
-        
-        return prevList.filter(p => p.id !== planetId);
-      }
 
       // 미디어가 남아있으면 업데이트
       const newList = prevList.map(p => {

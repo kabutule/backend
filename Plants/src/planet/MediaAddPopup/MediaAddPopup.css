@@ -13,6 +13,25 @@
   animation: fadeIn 0.3s ease;
 }
 
+.media-add-panel::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+.media-add-panel::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.media-add-panel::-webkit-scrollbar-thumb {
+  background: rgba(123, 123, 255, 0.4);
+  border-radius: 10px;
+}
+
+.media-add-panel::-webkit-scrollbar-thumb:hover {
+  background: rgba(123, 123, 255, 0.6);
+}
+
 /* 미디어 추가 패널 */
 .media-add-panel {
   background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 100%);

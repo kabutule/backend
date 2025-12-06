@@ -1,0 +1,144 @@
+/* src/planet/PlanetEditPopup/PlanetEditPopup.css */
+
+.planet-edit-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20000; /* MediaPopup보다 위에 오도록 설정 */
+  animation: fadeIn 0.2s ease;
+  backdrop-filter: blur(5px);
+}
+
+.planet-edit-panel {
+  background: #2a2a3e;
+  padding: 30px;
+  border-radius: 16px;
+  width: 400px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+}
+
+.planet-edit-panel h3 {
+  margin: 0;
+  color: #fff;
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.edit-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.edit-label {
+  font-size: 13px;
+  color: #aaa;
+  font-weight: 600;
+}
+
+.edit-input-text {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 12px;
+  border-radius: 8px;
+  color: #fff;
+  outline: none;
+  font-size: 15px;
+  transition: border-color 0.2s;
+}
+
+.edit-input-text:focus {
+  border-color: #7b7bff;
+}
+
+/* 썸네일 미리보기 영역 */
+.edit-thumbnail-preview {
+  width: 120px;
+  height: 120px;
+  border-radius: 12px;
+  background: #000;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-top: 5px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit-thumbnail-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.no-preview-text {
+  color: #666;
+  font-size: 12px;
+}
+
+.edit-file-btn {
+  margin-top: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  width: fit-content;
+  transition: background 0.2s;
+}
+
+.edit-file-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 20px;
+}
+
+.edit-cancel-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #ddd;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.edit-cancel-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.edit-save-btn {
+  background: #7b7bff;
+  border: none;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.edit-save-btn:hover {
+  background: #6a6aff;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
